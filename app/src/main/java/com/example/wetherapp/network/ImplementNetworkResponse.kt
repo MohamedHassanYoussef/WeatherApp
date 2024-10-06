@@ -1,0 +1,46 @@
+package com.example.wetherapp.network
+
+import android.util.Log
+import com.example.wetherapp.model.Current.Current
+import com.example.wetherapp.model.forecast.Forecast
+
+
+class ImplementNetworkResponse private constructor(private val weatherApiService: ApiServeces) : WeatherNetworkResponse {
+
+    private val apiService: ApiServeces by lazy { RetrofitHelper.retrofit }
+
+    companion object {
+        private var instance: ImplementNetworkResponse? = null
+        fun getInstance(weatherApiService: ApiServeces): ImplementNetworkResponse {
+            return instance ?: synchronized(this) {
+                instance ?: ImplementNetworkResponse(weatherApiService)
+                    .also { instance = it }
+            }
+        }
+    }
+
+    override suspend fun getCurrent(
+        longitude: Double?,
+        latitude: Double?,
+        language: String?,
+        units: String?
+    ): Current {
+        Log.d("current1", "Forecast Weather langtudue: $longitude")
+
+        return apiService.getAllWeather(longitude, latitude, language, units)
+    }
+
+     override suspend fun getForecast(
+         long: Double?,
+         lat: Double?,
+         language: String?,
+         units: String?
+     ): Forecast {
+         Log.d("repoForecast1", "Forecast Weather langtudue: $long")
+
+         val forecastResponse = apiService.getForcastWeather(long, lat, language, units)
+         Log.d("ForecastResponse", forecastResponse.toString())
+         return forecastResponse
+     }
+
+ }

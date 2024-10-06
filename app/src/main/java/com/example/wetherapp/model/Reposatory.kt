@@ -1,0 +1,23 @@
+package com.example.wetherapp.model
+
+
+import com.example.wetherapp.model.Current.Current
+import com.example.wetherapp.model.forecast.Forecast
+import kotlinx.coroutines.flow.Flow
+
+interface Reposatory {
+    suspend fun getCurrentWeather(
+        long:Double?,
+        lat:Double?,
+        language: String?,
+       units:String?
+    ): Flow<Current>
+
+    suspend fun getForecastWeather(
+        long:Double?,
+        lat:Double?,
+        language: String?,
+        units:String?
+    ): Flow<Forecast>
+
+}
