@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wetherapp.R
 import com.example.wetherapp.databinding.ItemHoursBinding
-import com.example.wetherapp.model.forecast.ListElement
-import com.example.wetherapp.model.forecast.MainEnum
+import com.example.wetherapp.model.forecast.HoursPojo
 
-class WeatherAdapterHours : ListAdapter<ListElement, ViewHolderHours>(WeatherDiffUtil()) {
+
+class WeatherAdapterHours : ListAdapter<HoursPojo, ViewHolderHours>(WeatherHoursDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderHours {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -18,21 +18,19 @@ class WeatherAdapterHours : ListAdapter<ListElement, ViewHolderHours>(WeatherDif
     }
 
     override fun onBindViewHolder(holder: ViewHolderHours, position: Int) {
-        val forecast = getItem(position)
+        val forecastHour = getItem(position)
+
+        Log.d("WeatherAdapterHours", "Day: ${forecastHour.day}, Time: ${forecastHour.hours}, Temp: ${forecastHour.degree}")
+
+        holder.binding.tvTimeHours.text = forecastHour.hours
+        holder.binding.tvDegreeHours.text = forecastHour.degree
 
 
-        Log.d("WeatherAdapterHours", "Date: ${forecast.dtTxt}, Temp: ${forecast.main.temp}°C, Status: ${forecast.weather[0].main}")
-
-        holder.binding.tvDateHours.text = forecast.dtTxt
-        holder.binding.tvTimeHours.text = forecast.dtTxt.split(" ")[1]
-        holder.binding.tvDegreeHours.text = "${forecast.main.temp}°C"
-
-        val weatherStatus = forecast.weather[0].main
-        val weatherIcon = when (weatherStatus) {
-            MainEnum.Clear -> R.drawable.sun
-            MainEnum.Clouds  -> R.drawable.cloud
-            MainEnum.Rain -> R.drawable.rain
-
+        val weatherIcon = when (forecastHour.thum) {
+            "01d" -> R.drawable.sun
+            "02d", "03d", "04d" -> R.drawable.cloud
+            "09d", "10d" -> R.drawable.rain
+            else -> R.drawable.sun
         }
 
         holder.binding.ivStatusIconHours.setImageResource(weatherIcon)
@@ -41,14 +39,12 @@ class WeatherAdapterHours : ListAdapter<ListElement, ViewHolderHours>(WeatherDif
 
 class ViewHolderHours(val binding: ItemHoursBinding) : RecyclerView.ViewHolder(binding.root)
 
-class WeatherDiffUtil : DiffUtil.ItemCallback<ListElement>() {
-    override fun areItemsTheSame(oldItem: ListElement, newItem: ListElement): Boolean {
-        Log.d("WeatherDiffUtil", "Checking if items are the same: ${oldItem.pop} vs ${newItem.pop}")
-        return oldItem.pop == newItem.pop
+class WeatherHoursDiffUtil : DiffUtil.ItemCallback<HoursPojo>() {
+    override fun areItemsTheSame(oldItem: HoursPojo, newItem: HoursPojo): Boolean {
+        return oldItem.hours == newItem.hours
     }
 
-    override fun areContentsTheSame(oldItem: ListElement, newItem: ListElement): Boolean {
-        Log.d("WeatherDiffUtil", "Checking if contents are the same: ${oldItem == newItem}")
+    override fun areContentsTheSame(oldItem: HoursPojo, newItem: HoursPojo): Boolean {
         return oldItem == newItem
     }
 }

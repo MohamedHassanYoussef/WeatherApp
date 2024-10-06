@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wetherapp.databinding.ItemDaysBinding
-import com.example.wetherapp.model.forecast.ListElement
+import com.example.wetherapp.model.forecast.DaysPojo
 import com.example.wetherapp.R
-import com.example.wetherapp.model.forecast.MainEnum
 
-class WeatherAdapterDays : ListAdapter<ListElement, ViewHolderDays>(WeatherDaysDiffUtil()) {
+class WeatherAdapterDays : ListAdapter<DaysPojo, ViewHolderDays>(WeatherDaysDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderDays {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -19,32 +18,33 @@ class WeatherAdapterDays : ListAdapter<ListElement, ViewHolderDays>(WeatherDaysD
     }
 
     override fun onBindViewHolder(holder: ViewHolderDays, position: Int) {
-        val forecastDays = getItem(position)
-
-        holder.binding.tvDay.text = forecastDays.dtTxt
-        holder.binding.tvDegreeDays.text = "${forecastDays.main.temp}°C"
-        holder.binding.tvStatusDays.text = forecastDays.weather[0].description
+        val forecastDay = getItem(position)
 
 
-        val weatherStatus = forecastDays.weather[0].main
-        val weatherIcon = when (weatherStatus) {
-            MainEnum.Clear -> R.drawable.sun
-            MainEnum.Clouds  -> R.drawable.cloud
-            MainEnum.Rain -> R.drawable.rain
+        holder.binding.tvDay.text = forecastDay.day
+        holder.binding.tvDegreeDays.text = forecastDay.degree
+        holder.binding.tvStatusDays.text = forecastDay.description
 
+
+        val weatherIcon = when (forecastDay.thum) {
+            "01d" -> R.drawable.sun
+            "02d", "03d", "04d" -> R.drawable.cloud
+            "09d", "10d" -> R.drawable.rain
+            else->R.drawable.sun
         }
+
         holder.binding.ivIconDays.setImageResource(weatherIcon)
     }
 }
 
 class ViewHolderDays(val binding: ItemDaysBinding) : RecyclerView.ViewHolder(binding.root)
 
-class WeatherDaysDiffUtil : DiffUtil.ItemCallback<ListElement>() {
-    override fun areItemsTheSame(oldItem: ListElement, newItem: ListElement): Boolean {
-        return oldItem.dt == newItem.dt
+class WeatherDaysDiffUtil : DiffUtil.ItemCallback<DaysPojo>() {
+    override fun areItemsTheSame(oldItem: DaysPojo, newItem: DaysPojo): Boolean {
+        return oldItem.day == newItem.day
     }
 
-    override fun areContentsTheSame(oldItem: ListElement, newItem: ListElement): Boolean {
+    override fun areContentsTheSame(oldItem: DaysPojo, newItem: DaysPojo): Boolean {
         return oldItem == newItem
     }
 }

@@ -26,7 +26,6 @@ class HomeViewModel(private val reposatory: Reposatory) : ViewModel() {
             try {
                 reposatory.getCurrentWeather(lat, lon, language, units).collect { data ->
                     _weatherData.value = data
-                    Log.d("HomeViewModel", "current Weather Data: ${data.name}")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -42,14 +41,10 @@ class HomeViewModel(private val reposatory: Reposatory) : ViewModel() {
             _isLoading.value = true
             try {
                 reposatory.getForecastWeather(lat,lon,language,units).collect {data1->
-                    Log.d("HomeViewModelForecast3", "Forecast Weather Data: ${data1.list}")
                     _weatherForecast.value = data1
-                    Log.d("HomeViewModelForecast3", "Forecast Weather Data: ${data1.list}")
                 }
             }catch (e: Exception) {
                 e.printStackTrace()
-                Log.d("HomeViewModelerror", "Forecast Weather Data: ${e}")
-
             } finally {
                 _isLoading.value = false
             }

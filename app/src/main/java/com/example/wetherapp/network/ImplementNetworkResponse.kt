@@ -25,8 +25,6 @@ class ImplementNetworkResponse private constructor(private val weatherApiService
         language: String?,
         units: String?
     ): Current {
-        Log.d("current1", "Forecast Weather langtudue: $longitude")
-
         return apiService.getAllWeather(longitude, latitude, language, units)
     }
 
@@ -36,11 +34,8 @@ class ImplementNetworkResponse private constructor(private val weatherApiService
          language: String?,
          units: String?
      ): Forecast {
-         Log.d("repoForecast1", "Forecast Weather langtudue: $long")
+         return apiService.getForcastWeather(long, lat, language, units)
 
-         val forecastResponse = apiService.getForcastWeather(long, lat, language, units)
-         Log.d("ForecastResponse", forecastResponse.toString())
-         return forecastResponse
      }
 
  }

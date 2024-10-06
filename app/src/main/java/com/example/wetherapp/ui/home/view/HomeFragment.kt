@@ -5,6 +5,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wetherapp.R
 import com.example.wetherapp.databinding.FragmentHomeBinding
 import com.example.wetherapp.location.Location
 import com.example.wetherapp.model.RepoImplementation
+import com.example.wetherapp.model.forecast.MainEnum
+import com.example.wetherapp.model.forecast.extractDailyWeatherData
+import com.example.wetherapp.model.forecast.extractWeatherData
 import com.example.wetherapp.network.ImplementNetworkResponse
 import com.example.wetherapp.network.RetrofitHelper
 import com.example.wetherapp.ui.home.viewmodel.HomeFactory
 import com.example.wetherapp.ui.home.viewmodel.HomeViewModel
 import com.google.android.gms.location.LocationServices
+
 
 import kotlinx.coroutines.launch
 
@@ -51,7 +57,8 @@ class HomeFragment : Fragment() {
 
         weatherAdapterHours = WeatherAdapterHours()
         binding.recyclerViewHours.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = weatherAdapterHours
         }
         weatherAdapterDays = WeatherAdapterDays()
@@ -119,7 +126,8 @@ class HomeFragment : Fragment() {
             location.getCurrentLocation().collect { coordinate ->
                 _binding?.let { binding ->
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                    val addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
+                    val addresses =
+                        geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
 
                     val cityName = if (!addresses.isNullOrEmpty()) {
                         addresses[0].locality ?: addresses[0].subAdminArea ?: "Unknown City"
@@ -136,6 +144,12 @@ class HomeFragment : Fragment() {
                         language = "en",
                         units = "metric"
                     )
+                    homeViewModel.getForecast(
+                        lat = coordinate.latitude,
+                        lon = coordinate.longitude,
+                        language = "en",
+                        units = "metric"
+                    )
                 }
             }
         }
@@ -147,6 +161,16 @@ class HomeFragment : Fragment() {
                         binding.tvDate.text = formatDate(date.format(Date()))
                         binding.tvDegree.text = "${it.main.temp}°C"
                         binding.tvStatus.text = it.weather[0].description
+                        val weatherStatus = currentWeather.weather[0].main
+                        val weatherIcon = when (weatherStatus) {
+                            MainEnum.Clear.toString() -> R.drawable.sun
+                            MainEnum.Clouds.toString() -> R.drawable.cloud
+                            MainEnum.Rain.toString() -> R.drawable.rain
+                            else -> {
+                                R.drawable.sun
+                            }
+                        }
+                        binding.imageStatus.setImageResource(weatherIcon)
                     }
                 }
             }
@@ -167,11 +191,18 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             homeViewModel.weatherForecast.collect { forecast ->
                 forecast?.let {
-                        weatherAdapterHours.submitList(it.list)
-                    weatherAdapterDays.submitList(it.list)
+                    val hours = extractWeatherData(it)
+                    weatherAdapterHours.submitList(hours)
+                    Log.d("TAGh", "fetchLocationAndWeather:$hours ")
+
+                    val daysList = extractDailyWeatherData(it.list)
+                    Log.d("TAG", "fetchLocationAndWeather:${it.list} ")
+                    weatherAdapterDays.submitList(daysList)
+                    Log.d("TAG1", "fetchLocationAndWeather:$daysList ")
                 }
             }
         }
+
     }
 
     private fun formatDate(dateString: String): String {
