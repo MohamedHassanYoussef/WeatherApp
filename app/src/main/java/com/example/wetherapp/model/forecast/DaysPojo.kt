@@ -1,6 +1,5 @@
 package com.example.wetherapp.model.forecast
 
-
 import java.util.Calendar
 import java.util.Locale
 
@@ -12,23 +11,29 @@ data class DaysPojo(
 )
 
 fun extractDailyWeatherData(forecast: List<ListElement>): List<DaysPojo> {
+    val processedDays = mutableSetOf<String>()
+
     val groupedByDay = forecast.groupBy { listElement ->
-        listElement.dt
+        getDay(listElement.dt)
     }
 
-    return groupedByDay.map { (day, listElements) ->
+    return groupedByDay.mapNotNull { (day, listElements) ->
         val firstElement = listElements.firstOrNull()
 
         if (firstElement != null) {
-
-            val day = getDay(firstElement.dt)
             val description = firstElement.weather.firstOrNull()?.description ?: ""
             val degree = "${firstElement.main.tempMin.toDouble()}°C/ ${firstElement.main.tempMax.toString()}°C"
             val thum = firstElement.weather.firstOrNull()?.icon ?: ""
 
-            DaysPojo(day, description, degree, thum)
+
+            if (day !in processedDays) {
+                processedDays.add(day)
+                DaysPojo(day, description, degree, thum)
+            } else {
+                null
+            }
         } else {
-            DaysPojo(day.toString(), "", "", "")
+            null
         }
     }
 }
@@ -39,5 +44,3 @@ private fun getDay(timestamp: Long): String {
     val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
     return dayOfWeek ?: ""
 }
-
-
