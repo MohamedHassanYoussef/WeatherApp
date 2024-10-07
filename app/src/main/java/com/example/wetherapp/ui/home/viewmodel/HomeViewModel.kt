@@ -26,6 +26,7 @@ class HomeViewModel(private val reposatory: Reposatory) : ViewModel() {
             try {
                 reposatory.getCurrentWeather(lat, lon, language, units).collect { data ->
                     _weatherData.value = data
+                    Log.d("data", "getWeatherData:$data ")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

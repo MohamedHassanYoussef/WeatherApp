@@ -1,5 +1,8 @@
 
 package com.example.wetherapp.model.forecast
+
+import com.google.gson.annotations.SerializedName
+
 data class Forecast (
     val cod: String,
     val message: Long,
@@ -44,7 +47,9 @@ data class Clouds (
 data class MainClass (
     val temp: Double,
     val feelsLike: Double,
+    @SerializedName("temp_min")
     val tempMin: Double,
+    @SerializedName("temp_max")
     val tempMax: Double,
     val pressure: Long,
     val seaLevel: Long,
