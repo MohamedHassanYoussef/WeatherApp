@@ -16,16 +16,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetherapp.R
 import com.example.wetherapp.databinding.FragmentHomeBinding
+import com.example.wetherapp.db.FavouriteDaoImplementation
+import com.example.wetherapp.db.FavouriteDatabase
 import com.example.wetherapp.location.Location
 import com.example.wetherapp.model.RepoImplementation
 import com.example.wetherapp.model.forecast.MainEnum
 import com.example.wetherapp.model.forecast.extractDailyWeatherData
-import com.example.wetherapp.model.forecast.extractWeatherData
 import com.example.wetherapp.network.ImplementNetworkResponse
 import com.example.wetherapp.network.RetrofitHelper
 import com.example.wetherapp.ui.home.viewmodel.HomeFactory
 import com.example.wetherapp.ui.home.viewmodel.HomeViewModel
 import com.google.android.gms.location.LocationServices
+import extractWeatherData
 
 
 import kotlinx.coroutines.launch
@@ -73,7 +75,8 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels {
         HomeFactory(
             RepoImplementation.getInstance(
-                ImplementNetworkResponse.getInstance(RetrofitHelper.retrofit)
+                ImplementNetworkResponse.getInstance(RetrofitHelper.retrofit),
+                FavouriteDaoImplementation(FavouriteDatabase.getInstance(requireContext()))
             )
         )
     }
@@ -137,7 +140,6 @@ class HomeFragment : Fragment() {
 
                     binding.tvCityName.text = cityName
 
-                    // Fetch weather data using coordinates
                     homeViewModel.getWeatherData(
                         lat = coordinate.latitude,
                         lon = coordinate.longitude,
@@ -193,12 +195,8 @@ class HomeFragment : Fragment() {
                 forecast?.let {
                     val hours = extractWeatherData(it)
                     weatherAdapterHours.submitList(hours)
-                    Log.d("TAGh", "fetchLocationAndWeather:$hours ")
-
                     val daysList = extractDailyWeatherData(it.list)
-                    Log.d("TAG", "fetchLocationAndWeather:${it.list} ")
                     weatherAdapterDays.submitList(daysList)
-                    Log.d("TAG1", "fetchLocationAndWeather:$daysList ")
                 }
             }
         }

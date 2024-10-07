@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/favourit"
-        android:name="com.example.wetherapp.ui.fav.FavoriteFragment"
+        android:name="com.example.wetherapp.ui.fav.view.FavoriteFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 

@@ -9,7 +9,7 @@
     <item
         android:id="@+id/favourit"
         android:icon="@drawable/favorite"
-        android:title="@string/favourit" />
+        android:title="@string/favourite" />
 
     <item
         android:id="@+id/alert"

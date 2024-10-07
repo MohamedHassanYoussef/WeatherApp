@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wetherapp.R
 import com.example.wetherapp.databinding.ItemHoursBinding
-import com.example.wetherapp.model.forecast.HoursPojo
+
 
 
 class WeatherAdapterHours : ListAdapter<HoursPojo, ViewHolderHours>(WeatherHoursDiffUtil()) {
