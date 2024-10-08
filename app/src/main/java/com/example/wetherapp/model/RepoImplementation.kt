@@ -1,5 +1,6 @@
 package com.example.wetherapp.model
 
+import com.example.wetherapp.db.FavouriteDao
 import com.example.wetherapp.db.FavouriteDaoImplementation
 import com.example.wetherapp.db.PlaceFavPojo
 import com.example.wetherapp.model.Current.Current
@@ -9,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 
-class RepoImplementation(private val remote: WeatherNetworkResponse, private val local: FavouriteDaoImplementation) : Reposatory {
+class RepoImplementation(private val remote: WeatherNetworkResponse, private val local: FavouriteDao) : Reposatory {
 
     override suspend fun getCurrentWeather(
         long: Double?,

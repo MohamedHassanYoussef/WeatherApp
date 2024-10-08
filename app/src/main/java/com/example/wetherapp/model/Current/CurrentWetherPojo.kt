@@ -1,7 +1,9 @@
 package com.example.wetherapp.model.Current
 
+import com.example.wetherapp.model.forecast.Coord
 
-data class Current (
+
+data class Current(
     val coord: Coord,
     val weather: List<Weather>,
     val base: String,

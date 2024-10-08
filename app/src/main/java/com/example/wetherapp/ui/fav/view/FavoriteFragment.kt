@@ -82,11 +82,28 @@ class FavoriteFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapterFavorite = AdapterFavorite(
-            onDeleteClick = { place -> favoriteViewModel.deleteFromFav(place) },
+            onDeleteClick = { place -> showDeleteConfirmationDialog(place) },
             onItemClick = { place ->  }
         )
         binding.rvFavourite.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFavourite.adapter = adapterFavorite
+    }
+
+    private fun showDeleteConfirmationDialog(place: PlaceFavPojo) {
+        val builder = android.app.AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirm Deletion")
+        builder.setMessage("Are you sure you want to delete this favorite place?")
+
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            favoriteViewModel.deleteFromFav(place)
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.create().show()
     }
 
     private fun observeViewModel() {

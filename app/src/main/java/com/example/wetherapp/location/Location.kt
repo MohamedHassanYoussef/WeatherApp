@@ -55,7 +55,7 @@ class Location private constructor(
     fun fetchCurrentLocation() {
         if (checkLocationPermissions() && isLocationEnabled()) {
             fusedLocationClient.requestLocationUpdates(
-                LocationRequest.Builder(0).apply {
+                LocationRequest.Builder(5000).apply {
                     setPriority(Priority.PRIORITY_HIGH_ACCURACY)
                 }.build(),
                 object : LocationCallback() {
