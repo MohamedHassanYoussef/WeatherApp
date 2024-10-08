@@ -20,10 +20,10 @@
             android:id="@+id/tv_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="8dp"
             android:text="@string/satarday"
             android:textColor="@color/purple_700"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,11 +42,11 @@
 
         <TextView
             android:id="@+id/tv_status_days"
-            android:layout_width="110dp"
-            android:layout_height="30dp"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:text="@string/sunny_day"
             android:textColor="@color/purple_700"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/iv_icon_days"
@@ -60,11 +60,11 @@
             android:layout_height="wrap_content"
             android:text="@string/degree_min_max"
             android:textColor="@color/purple_700"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_icon_days"
             app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="8dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -33,13 +33,11 @@ class AdapterFavorite(
     }
 }
 
-
-
 class ViewHolderFavorite(val binding: ItemFavouriteBinding) : RecyclerView.ViewHolder(binding.root)
 
 class WeatherFavDiffUtil : DiffUtil.ItemCallback<PlaceFavPojo>() {
     override fun areItemsTheSame(oldItem: PlaceFavPojo, newItem: PlaceFavPojo): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.cityName == newItem.cityName
     }
 
     override fun areContentsTheSame(oldItem: PlaceFavPojo, newItem: PlaceFavPojo): Boolean {

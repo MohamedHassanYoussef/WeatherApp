@@ -19,9 +19,7 @@ abstract class FavouriteDatabase: RoomDatabase() {
                     context.applicationContext,
                     FavouriteDatabase::class.java,
                     "table"
-                ).build().also {
-                    instance = it
-                }
+                ).build()
             }
         }
     }

@@ -28,7 +28,8 @@ import com.example.wetherapp.ui.home.viewmodel.HomeFactory
 import com.example.wetherapp.ui.home.viewmodel.HomeViewModel
 import com.google.android.gms.location.LocationServices
 import extractWeatherData
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 
 import kotlinx.coroutines.launch
 
@@ -81,7 +82,6 @@ class HomeFragment : Fragment() {
         )
     }
 
-
     private fun checkAndRequestPermissions() {
         if (checkLocationPermissions()) {
             fetchLocationAndWeather()
@@ -126,7 +126,7 @@ class HomeFragment : Fragment() {
 
     private fun fetchLocationAndWeather() {
         viewLifecycleOwner.lifecycleScope.launch {
-            location.getCurrentLocation().collect { coordinate ->
+            location.getCurrentLocation().collectLatest { coordinate ->
                 _binding?.let { binding ->
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
                     val addresses =
@@ -157,7 +157,7 @@ class HomeFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.weatherData.collect { currentWeather ->
+            homeViewModel.weatherData.collectLatest { currentWeather ->
                 _binding?.let { binding ->
                     currentWeather?.let {
                         binding.tvDate.text = formatDate(date.format(Date()))
@@ -179,28 +179,24 @@ class HomeFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.isLoading.collect { isLoading ->
+            homeViewModel.isLoading.collectLatest { isLoading ->
                 _binding?.let { binding ->
-                    if (isLoading) {
-
-                    } else {
-
-                    }
+                    //  binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
                 }
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.weatherForecast.collect { forecast ->
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            homeViewModel.weatherForecast.collectLatest { forecast ->
                 forecast?.let {
                     val hours = extractWeatherData(it)
                     weatherAdapterHours.submitList(hours)
+
                     val daysList = extractDailyWeatherData(it.list)
                     weatherAdapterDays.submitList(daysList)
                 }
             }
         }
-
     }
 
     private fun formatDate(dateString: String): String {

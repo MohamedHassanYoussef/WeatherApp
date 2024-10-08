@@ -18,6 +18,9 @@ class FavoriteViewModel(private val reposatory: Reposatory) : ViewModel() {
     private val _isLoading = MutableStateFlow<Boolean>(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    init {
+        getFavoritePlaces()
+    }
     fun getFavoritePlaces() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
