@@ -13,15 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetherapp.R
 import com.example.wetherapp.databinding.FragmentDashboardBinding
-import com.example.wetherapp.db.FavouriteDaoImplementation
-import com.example.wetherapp.db.FavouriteDatabase
+import com.example.wetherapp.db.LocalDaoImplementation
+import com.example.wetherapp.db.LocalDatabase
 import com.example.wetherapp.db.PlaceFavPojo
 import com.example.wetherapp.model.RepoImplementation
 import com.example.wetherapp.network.ImplementNetworkResponse
 import com.example.wetherapp.network.RetrofitHelper
 import com.example.wetherapp.ui.fav.viewmodel.FavoriteFactory
 import com.example.wetherapp.ui.fav.viewmodel.FavoriteViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -34,7 +33,7 @@ class FavoriteFragment : Fragment() {
         FavoriteFactory(
             RepoImplementation.getInstance(
                 ImplementNetworkResponse.getInstance(RetrofitHelper.retrofit),
-                FavouriteDaoImplementation(FavouriteDatabase.getInstance(requireContext()))
+                LocalDaoImplementation(LocalDatabase.getInstance(requireContext()))
             )
         )
     }

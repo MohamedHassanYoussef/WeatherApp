@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 @Dao
-interface FavouriteDao {
+interface LocalDataDao {
 
     @Query("SELECT * FROM 'table'")
     fun getAllFavouritePlaces(): Flow<List<PlaceFavPojo>>
@@ -17,4 +17,15 @@ interface FavouriteDao {
 
     @Delete
     suspend fun deletePlaceFromFav(place: PlaceFavPojo)
+
+
+
+    @Query("SELECT * FROM tableAlerm")
+    fun getAllAlerts(): Flow<List<AlertPojo>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAlert(alert: AlertPojo)
+
+    @Delete
+    suspend fun deleteAlert(alert: AlertPojo)
 }

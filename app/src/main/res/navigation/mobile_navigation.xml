@@ -23,9 +23,13 @@
 
     <fragment
         android:id="@+id/alert"
-        android:name="com.example.wetherapp.ui.alert.AlertFragment"
+        android:name="com.example.wetherapp.ui.alert.view.AlertFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications" >
+        <action
+            android:id="@+id/action_alert_to_alarmMap"
+            app:destination="@id/alarmMap" />
+    </fragment>
     <fragment
         android:id="@+id/setting"
         android:name="com.example.wetherapp.ui.setting.SettingFragment"
@@ -36,4 +40,9 @@
         android:name="com.example.wetherapp.ui.map.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/alarmMap"
+        android:name="com.example.wetherapp.ui.map.AlarmMap"
+        android:label="AlarmMap"
+        tools:layout="@layout/fragment_alarm_map"/>
 </navigation>

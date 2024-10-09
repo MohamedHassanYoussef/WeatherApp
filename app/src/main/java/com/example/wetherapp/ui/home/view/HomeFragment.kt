@@ -5,7 +5,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetherapp.R
 import com.example.wetherapp.databinding.FragmentHomeBinding
-import com.example.wetherapp.db.FavouriteDaoImplementation
-import com.example.wetherapp.db.FavouriteDatabase
+import com.example.wetherapp.db.LocalDaoImplementation
+import com.example.wetherapp.db.LocalDatabase
 import com.example.wetherapp.location.Location
 import com.example.wetherapp.model.RepoImplementation
 import com.example.wetherapp.model.forecast.MainEnum
@@ -77,7 +76,7 @@ class HomeFragment : Fragment() {
         HomeFactory(
             RepoImplementation.getInstance(
                 ImplementNetworkResponse.getInstance(RetrofitHelper.retrofit),
-                FavouriteDaoImplementation(FavouriteDatabase.getInstance(requireContext()))
+                LocalDaoImplementation(LocalDatabase.getInstance(requireContext()))
             )
         )
     }

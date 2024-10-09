@@ -27,7 +27,7 @@ import org.junit.Test
 
 class RepoImplementationTest {
 
-    private lateinit var fakeFavouriteDao: FakeFavouriteDao
+    private lateinit var fakeFavouriteDao: FakeLocalDataDao
     private lateinit var fakeWeatherNetworkResponse: FakeWeatherNetworkResponse
     private lateinit var repoImplementation: RepoImplementation
 
@@ -120,7 +120,7 @@ class RepoImplementationTest {
     @Before
     fun setup() {
 
-        fakeFavouriteDao = FakeFavouriteDao()
+        fakeFavouriteDao = FakeLocalDataDao()
         fakeWeatherNetworkResponse = FakeWeatherNetworkResponse(
             remoteCurrent = currentWeather,
             remoteForecast = weatherForecast
