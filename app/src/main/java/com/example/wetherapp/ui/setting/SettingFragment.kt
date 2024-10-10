@@ -3,7 +3,6 @@ package com.example.wetherapp.ui.setting
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.weatherapp.Constants
+import com.example.weatherapp.ConstantValue
 import com.example.wetherapp.R
 import com.example.wetherapp.databinding.FragmentSettingBinding
 
@@ -29,11 +28,11 @@ class SettingFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
         sharedPreferences = requireActivity().getSharedPreferences(
-            Constants.SHARED_PREFERENCES_NAME,
+            ConstantValue.SHARED_PREFERENCES_NAME,
             Context.MODE_PRIVATE
         )
         locationSharedPreferences = requireActivity().getSharedPreferences(
-            Constants.LOCATION_PREFERENCE_METHOD,
+            ConstantValue.LOCATION_PREFERENCE_METHOD,
             Context.MODE_PRIVATE
         )
         updateData()
@@ -49,14 +48,14 @@ class SettingFragment : Fragment() {
             when (selectedLanguage.text) {
                 getString(R.string.arabic) -> {
                     sharedPreferences.edit()
-                        .putString(Constants.LANGUAGE_KEY, Constants.SupportedLanguages.Arabic.toString())
+                        .putString(ConstantValue.LANGUAGE_KEY, ConstantValue.SupportedLanguages.Arabic.toString())
                         .apply()
                     changeAppLanguage("ar")
                 }
 
                 getString(R.string.english) -> {
                     sharedPreferences.edit()
-                        .putString(Constants.LANGUAGE_KEY, Constants.SupportedLanguages.English.toString())
+                        .putString(ConstantValue.LANGUAGE_KEY, ConstantValue.SupportedLanguages.English.toString())
                         .apply()
                     changeAppLanguage("en")
                 }
@@ -69,19 +68,19 @@ class SettingFragment : Fragment() {
             when (selectedUnit.text) {
                 getString(R.string.celsius) -> {
                     sharedPreferences.edit()
-                        .putString(Constants.UNITS_KEY, Constants.SupportedUnits.Metric.toString())
+                        .putString(ConstantValue.UNITS_KEY, ConstantValue.SupportedUnits.Metric.toString())
                         .apply()
                 }
 
                 getString(R.string.kelvin) -> {
                     sharedPreferences.edit()
-                        .putString(Constants.UNITS_KEY, Constants.SupportedUnits.Standard.toString())
+                        .putString(ConstantValue.UNITS_KEY, ConstantValue.SupportedUnits.Standard.toString())
                         .apply()
                 }
 
                 getString(R.string.fahrenheit) -> {
                     sharedPreferences.edit()
-                        .putString(Constants.UNITS_KEY, Constants.SupportedUnits.Imperial.toString())
+                        .putString(ConstantValue.UNITS_KEY, ConstantValue.SupportedUnits.Imperial.toString())
                         .apply()
                 }
             }
@@ -93,13 +92,13 @@ class SettingFragment : Fragment() {
             when (selectedLocation.text) {
                 getString(R.string.gps_setting) -> {
                     locationSharedPreferences.edit()
-                        .putString(Constants.LOCATION_KEY, Constants.LocationMethod.GPS.toString())
+                        .putString(ConstantValue.LOCATION_KEY, ConstantValue.LocationMethod.GPS.toString())
                         .apply()
                 }
 
                 getString(R.string.map_title) -> {
                     locationSharedPreferences.edit()
-                        .putString(Constants.LOCATION_KEY, Constants.LocationMethod.Map.toString())
+                        .putString(ConstantValue.LOCATION_KEY, ConstantValue.LocationMethod.Map.toString())
                         .apply()
 
                     // Navigate to MapsSetting Fragment when "Map" is selected
@@ -130,26 +129,26 @@ class SettingFragment : Fragment() {
 
     private fun updateData() {
         // Fetch saved settings
-        val savedLanguage = sharedPreferences.getString(Constants.LANGUAGE_KEY, Constants.SupportedLanguages.English.toString())
-        val savedUnit = sharedPreferences.getString(Constants.UNITS_KEY, Constants.SupportedUnits.Metric.toString())
-        val savedLocation = locationSharedPreferences.getString(Constants.LOCATION_KEY, Constants.LocationMethod.GPS.toString())
+        val savedLanguage = sharedPreferences.getString(ConstantValue.LANGUAGE_KEY, ConstantValue.SupportedLanguages.English.toString())
+        val savedUnit = sharedPreferences.getString(ConstantValue.UNITS_KEY, ConstantValue.SupportedUnits.Metric.toString())
+        val savedLocation = locationSharedPreferences.getString(ConstantValue.LOCATION_KEY, ConstantValue.LocationMethod.GPS.toString())
 
         // Update UI based on saved settings
-        if (savedLocation == Constants.LocationMethod.GPS.toString()) {
+        if (savedLocation == ConstantValue.LocationMethod.GPS.toString()) {
             binding.radioGroupSettingLocation.check(binding.radioSettingGps.id)
         } else {
             binding.radioGroupSettingLocation.check(binding.radioSettingMap.id)
         }
 
-        if (savedLanguage == Constants.SupportedLanguages.English.toString()) {
+        if (savedLanguage == ConstantValue.SupportedLanguages.English.toString()) {
             binding.radioGroupSettingLanguage.check(binding.radioSettingEnglish.id)
         } else {
             binding.radioGroupSettingLanguage.check(binding.radioSettingArabic.id)
         }
 
         when (savedUnit) {
-            Constants.SupportedUnits.Standard.toString() -> binding.radioGroupSettingTemp.check(binding.radioSettingKelvin.id)
-            Constants.SupportedUnits.Imperial.toString() -> binding.radioGroupSettingTemp.check(binding.radioFahrenheit.id)
+            ConstantValue.SupportedUnits.Standard.toString() -> binding.radioGroupSettingTemp.check(binding.radioSettingKelvin.id)
+            ConstantValue.SupportedUnits.Imperial.toString() -> binding.radioGroupSettingTemp.check(binding.radioFahrenheit.id)
             else -> binding.radioGroupSettingTemp.check(binding.radioSettingCelsius.id)
         }
     }

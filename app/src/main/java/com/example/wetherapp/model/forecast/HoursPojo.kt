@@ -19,7 +19,7 @@ fun extractWeatherData(forecast: Forecast): List<HoursPojo> {
             val day = getDay(listElement.dt)
             val timeInMillis = listElement.dt * 1000
             val hours = timeFormat.format(Date(timeInMillis))
-            val degree = "${listElement.main.temp}°C"
+            val degree = "${listElement.main.temp}°"
             Log.d("degree", "extractWeatherData:$degree")
             val thum = listElement.weather.firstOrNull()?.icon ?: ""
             HoursPojo(day, hours, degree, thum)

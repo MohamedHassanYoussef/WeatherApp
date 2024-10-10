@@ -59,10 +59,10 @@ class AlertFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Initialize the adapter
+
         adapter1 = AdapterAlert(
             onDeleteClick = { alertPojo ->
-                // Handle delete click
+
                 lifecycleScope.launch(Dispatchers.IO) {
                     alertViewModel.deleteAlert(alertPojo)
                     cancelAlarm(requireContext(),alertPojo.id)

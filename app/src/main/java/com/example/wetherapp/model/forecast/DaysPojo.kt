@@ -22,8 +22,11 @@ fun extractDailyWeatherData(forecast: List<ListElement>): List<DaysPojo> {
 
         if (firstElement != null) {
             val description = firstElement.weather.firstOrNull()?.description ?: ""
-            val degree = "${firstElement.main.tempMin.toDouble()}°C/ ${firstElement.main.tempMax.toString()}°C"
+
+
+            val degree = "${firstElement.main.tempMin.toDouble()}°/ ${firstElement.main.tempMax.toString()}°"
             val thum = firstElement.weather.firstOrNull()?.icon ?: ""
+
 
 
             if (day !in processedDays) {

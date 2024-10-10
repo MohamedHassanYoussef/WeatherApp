@@ -1,6 +1,6 @@
 package com.example.weatherapp
 
-object Constants {
+object ConstantValue {
 
     const val LANGUAGE_KEY = "languageKey"
     const val UNITS_KEY = "unitsKey"
