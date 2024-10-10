@@ -27,7 +27,7 @@ import com.example.wetherapp.location.Coordinate
 import com.example.wetherapp.model.RepoImplementation
 import com.example.wetherapp.network.ImplementNetworkResponse
 import com.example.wetherapp.network.RetrofitHelper
-import com.example.wetherapp.ui.alert.view.AlarmReceiver
+import com.example.wetherapp.ui.alert.view.AlarmHelper
 import com.example.wetherapp.ui.alert.viewmodel.AlertFactory
 import com.example.wetherapp.ui.alert.viewmodel.AlertViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -98,7 +98,7 @@ class AlarmMap : Fragment() {
 
         binding.btnAlarmLocation.setOnClickListener {
             coordinate?.let { coord ->
-                showDatePickerDialog(coord)
+                datePickerDialog(coord)
             } ?: run {
                 Toast.makeText(requireContext(), "Please select a location", Toast.LENGTH_SHORT)
                     .show()
@@ -114,7 +114,7 @@ class AlarmMap : Fragment() {
         }
     }
 
-    private fun showDatePickerDialog(location: Coordinate) {
+    private fun datePickerDialog(location: Coordinate) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -128,7 +128,7 @@ class AlarmMap : Fragment() {
                     set(Calendar.MONTH, selectedMonth)
                     set(Calendar.DAY_OF_MONTH, selectedDay)
                 }
-                showTimePickerDialog(selectedDate, location)
+                timePickerDialog(selectedDate, location)
             },
             year, month, day
         ).apply {
@@ -136,7 +136,7 @@ class AlarmMap : Fragment() {
         }.show()
     }
 
-    private fun showTimePickerDialog(selectedDate: Calendar, location: Coordinate) {
+    private fun timePickerDialog(selectedDate: Calendar, location: Coordinate) {
         val hour = selectedDate.get(Calendar.HOUR_OF_DAY)
         val minute = selectedDate.get(Calendar.MINUTE)
 
@@ -168,8 +168,8 @@ class AlarmMap : Fragment() {
     }
 
     private fun saveAlarmLocation(location: Coordinate, selectedDateTime: Calendar) {
-        context?.let { safeContext ->  // Safely using context
-            val intent = Intent(safeContext, AlarmReceiver::class.java).apply {
+        context?.let { safeContext ->
+            val intent = Intent(safeContext, AlarmHelper::class.java).apply {
                 putExtra("lat", location.latitude)
                 putExtra("long", location.longitude)
                 putExtra("cityName", "City Name")
@@ -213,7 +213,6 @@ class AlarmMap : Fragment() {
 
             }
 
-            // Navigating if NavController is accessible
             findNavController().navigate(R.id.alert, bundle)
 
             Log.d("AlarmLocation", "saveAlarmLocation: $bundle")
@@ -226,7 +225,7 @@ class AlarmMap : Fragment() {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
             if (addresses != null && addresses.isNotEmpty()) {
                 val address = addresses[0]
-                return address.locality // This gives the city name
+                return address.locality
             }
         } catch (e: Exception) {
             e.printStackTrace()
