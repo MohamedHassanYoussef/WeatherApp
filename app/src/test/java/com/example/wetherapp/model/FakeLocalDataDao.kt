@@ -1,5 +1,6 @@
 package com.example.wetherapp.model
 
+import com.example.wetherapp.db.AlertPojo
 import com.example.wetherapp.db.LocalDataDao
 import com.example.wetherapp.db.PlaceFavPojo
 import kotlinx.coroutines.flow.Flow
@@ -16,5 +17,17 @@ class FakeLocalDataDao(private var localData: MutableList<PlaceFavPojo> = mutabl
     }
     override suspend fun deletePlaceFromFav(place: PlaceFavPojo) {
         (localData.remove(place))
+    }
+
+    override fun getAllAlerts(): Flow<List<AlertPojo>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertAlert(alert: AlertPojo) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteAlert(alert: AlertPojo) {
+        TODO("Not yet implemented")
     }
 }

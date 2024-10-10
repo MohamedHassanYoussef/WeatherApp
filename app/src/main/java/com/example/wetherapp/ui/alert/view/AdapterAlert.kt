@@ -23,7 +23,7 @@ class AdapterAlert(
     override fun onBindViewHolder(holder: ViewHolderAlert, position: Int) {
         val alert = getItem(position)
         holder.binding.alarmTime.text=alert.time
-        holder.binding.txtCityname.text=alert.cityName
+
         holder.binding.iconDeleted.setOnClickListener {
             onDeleteClick(alert)
         }

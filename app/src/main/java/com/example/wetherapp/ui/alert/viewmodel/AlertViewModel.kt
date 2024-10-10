@@ -1,5 +1,6 @@
 package com.example.wetherapp.ui.alert.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetherapp.db.AlertPojo
@@ -27,6 +28,7 @@ class AlertViewModel(private val reposatory: Reposatory) : ViewModel() {
             try {
                 reposatory.getAllAlerts().collect { alertList ->
                     _alerts.value = alertList
+                    Log.d("TAGonreseve", "getAllAlerts: ${_alerts.value.lastIndex}")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -40,7 +42,7 @@ class AlertViewModel(private val reposatory: Reposatory) : ViewModel() {
     fun insertAlert(alert: AlertPojo) {
         viewModelScope.launch(Dispatchers.IO) {
             reposatory.insertAlert(alert)
-            getAllAlerts()
+            Log.d("TAGonreseve", "getAllAlertsxcvxcxv: ${alert.time}")
 
         }
     }
@@ -48,8 +50,7 @@ class AlertViewModel(private val reposatory: Reposatory) : ViewModel() {
     fun deleteAlert(alert: AlertPojo) {
         viewModelScope.launch(Dispatchers.IO) {
             reposatory.deleteAlert(alert)
-            getAllAlerts()
-
         }
     }
+
 }

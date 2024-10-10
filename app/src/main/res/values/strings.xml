@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherApp</string>
+    <string name="app_name" translatable="false">WeatherApp</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Favourite</string>
     <string name="title_notifications">Notifications</string>
@@ -16,7 +16,21 @@
     <string name="degree_min_max">23/13°c</string>
     <string name="save_location">Save Location</string>
     <string name="month">12 MAY</string>
-    <string name="time">3</string>
+    <string name="time">03:58 AM</string>
+    <string name="location">Location\n</string>
+    <string name="gps_setting">GPS</string>
+    <string name="map_title">MAP</string>
+    <string name="language">language</string>
+    <string name="english">English\n</string>
+    <string name="arabic">Arabic\n</string>
+    <string name="notifications">Notifications</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="temperature">Temperature</string>
+    <string name="celsius">Celsius</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    />
 
 
 </resources>

@@ -7,8 +7,8 @@ import java.io.Serializable
 
 @Entity(tableName = "table")
 data class PlaceFavPojo(
-    @PrimaryKey
-    var id: Int ,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
 
     var cityName: String,
     var latitude: Double,

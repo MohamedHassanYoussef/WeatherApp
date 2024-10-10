@@ -1,5 +1,6 @@
 package com.example.wetherapp.model
 
+import com.example.wetherapp.db.AlertPojo
 import com.example.wetherapp.db.PlaceFavPojo
 import com.example.wetherapp.model.Current.Current
 import com.example.wetherapp.model.forecast.Forecast
@@ -33,6 +34,18 @@ class FakeReposatory():Reposatory {
     }
 
     override suspend fun deletePlaceFromFav(place: PlaceFavPojo) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllAlerts(): Flow<List<AlertPojo>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertAlert(alert: AlertPojo) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteAlert(alert: AlertPojo) {
         TODO("Not yet implemented")
     }
 }

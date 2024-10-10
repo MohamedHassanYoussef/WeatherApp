@@ -8,8 +8,8 @@ import java.io.Serializable
 
 @Entity(tableName = "tableAlerm")
 data class AlertPojo(
-    @PrimaryKey
-    var id: Int,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int ,
     var cityName: String,
     var time :String,
     var latitude: Double,

@@ -34,7 +34,11 @@
         android:id="@+id/setting"
         android:name="com.example.wetherapp.ui.setting.SettingFragment"
         android:label="Setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_setting_to_mapsSetting"
+            app:destination="@id/mapsSetting" />
+    </fragment>
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.example.wetherapp.ui.map.MapsFragment"
@@ -45,4 +49,9 @@
         android:name="com.example.wetherapp.ui.map.AlarmMap"
         android:label="AlarmMap"
         tools:layout="@layout/fragment_alarm_map"/>
+    <fragment
+        android:id="@+id/mapsSetting"
+        android:name="com.example.wetherapp.ui.map.MapsSetting"
+        android:label="fragment_maps_setting"
+        tools:layout="@layout/fragment_maps_setting" />
 </navigation>

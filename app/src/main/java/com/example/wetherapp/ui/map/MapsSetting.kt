@@ -1,46 +1,50 @@
 package com.example.wetherapp.ui.map
 
+import android.app.AlertDialog
+import android.location.Geocoder
+import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.wetherapp.MainActivity
 import com.example.wetherapp.R
-import com.example.wetherapp.databinding.FragmentMapsBinding
-import com.example.wetherapp.location.Coordinate
+import com.example.wetherapp.databinding.FragmentMapsSettingBinding
+import com.example.wetherapp.db.PlaceFavPojo
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import android.app.AlertDialog
-import com.google.android.gms.maps.GoogleMap
+import java.util.Locale
 
-class MapsFragment : Fragment() {
+class MapsSetting : Fragment() {
 
-    private  var binding: FragmentMapsBinding? = null
-    private var coordinate: Coordinate? = null
+    private lateinit var binding: FragmentMapsSettingBinding
     private var marker: Marker? = null
     private var googleMap: GoogleMap? = null
-
-
+    private var place: PlaceFavPojo? = null
     private val callback = OnMapReadyCallback { googleMapInstance ->
-
         googleMap = googleMapInstance
         googleMap?.setOnMapClickListener { latLng ->
-            coordinate = Coordinate(latLng.latitude, latLng.longitude)
-            marker?.remove()
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
 
+            val cityName = if (addresses != null && addresses.isNotEmpty()) {
+                addresses[0].locality ?: "Unknown Location"
+            } else {
+                "Unknown Location"
+            }
+            place = PlaceFavPojo(id, cityName, latLng.latitude, latLng.longitude)
+            marker?.remove()
             marker = googleMap?.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title("Selected Location")
+                    .title(cityName)
             )
-
             googleMap?.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     latLng,
@@ -48,34 +52,39 @@ class MapsFragment : Fragment() {
                 )
             )
         }
-
     }
-
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMapsBinding.inflate(inflater, container, false)
-        return binding?.root
+        binding = FragmentMapsSettingBinding.inflate(inflater, container, false)
+        return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.mapSetting) as SupportMapFragment?
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.mapSetting) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
-        binding?.btnSaveLocation?.setOnClickListener {
-            coordinate?.let { coord ->
+
+        binding.btnSaveLocation.setOnClickListener {
+            place?.let { placeData ->
 
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("Save Location")
                     .setMessage("Are you sure you want to save this location?")
                     .setPositiveButton("Yes") { dialog, _ ->
                         val bundle = Bundle().apply {
-                            putDouble("latitude", coord.latitude)
-                            putDouble("longitude", coord.longitude)
+                            putDouble("latitude", placeData.latitude)
+                            putDouble("longitude", placeData.longitude)
+                            putString(
+                                "cityName",
+                                placeData.cityName
+                            )
                         }
-                        findNavController().navigate(R.id.favourit, bundle)
-                        Log.d("bundle", "onViewCreated:$bundle ")
+                        findNavController().navigate(R.id.navigation_home, bundle)
+                        Log.d("bundlesetting", "onViewCreated:$bundle ")
                         dialog.dismiss()
                     }
                     .setNegativeButton("No") { dialog, _ ->
@@ -89,18 +98,11 @@ class MapsFragment : Fragment() {
                     .show()
             }
         }
-
         googleMap?.setOnCameraIdleListener {
             val currentZoom = googleMap?.cameraPosition?.zoom ?: 0f
-
             if (currentZoom > 5f) {
                 googleMap?.moveCamera(CameraUpdateFactory.zoomTo(5f))
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-     binding = null
     }
 }
