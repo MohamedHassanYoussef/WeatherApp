@@ -49,7 +49,7 @@ class AlertFragment : Fragment() {
     private var longitude: Double? = null
     private var cityName: String? = null
 
-    private lateinit var adapter1: AdapterAlert  // Define adapter for RecyclerView
+    private lateinit var adapter1: AdapterAlert
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,10 +117,10 @@ class AlertFragment : Fragment() {
 
     @SuppressLint("ScheduleExactAlarm", "ServiceCast")
     private fun scheduleAlarm(selectedDateTime: Calendar) {
-        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+        val intent = Intent(requireContext(), AlarmHelper::class.java)
         intent.putExtra("lat", latitude)
         intent.putExtra("long", longitude)
-        intent.putExtra("cityName", cityName)  // Pass the city name
+        intent.putExtra("cityName", cityName)
         val pendingIntent = PendingIntent.getBroadcast(
             requireContext(), 0, intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -145,18 +145,18 @@ class AlertFragment : Fragment() {
     }
 
     fun cancelAlarm(context: Context, requestCode: Int) {
-        val intent = Intent(context, AlarmReceiver::class.java) // Same Intent used to set the alarm
+        val intent = Intent(context, AlarmHelper::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            requestCode, // Use the same request code
+            requestCode,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        // Get the AlarmManager service
+
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        // Cancel the alarm
+
         alarmManager.cancel(pendingIntent)
     }
 
