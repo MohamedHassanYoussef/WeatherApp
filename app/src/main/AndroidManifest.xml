@@ -28,7 +28,7 @@
 
 
         <receiver
-            android:name=".ui.alert.view.AlarmReceiver"
+            android:name=".ui.alert.view.AlarmHelper"
             android:enabled="true"
             android:exported="false"
             tools:ignore="ExportedReceiver">
