@@ -27,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AlarmReceiver : BroadcastReceiver() {
+class AlarmHelper : BroadcastReceiver() {
 
     var temp: Int = 0
     var latitude: Double? = null
@@ -97,11 +97,11 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun showNotification(context: Context, cityName: String) {
         Log.d("TAGonreseve", "showNotification : ")
         val channelId = CHANNEL_ID
-        createNotificationChannel(context, channelId)
+        notificationChannel(context, channelId)
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
 
-        val dismissIntent = Intent(context, AlarmReceiver::class.java).apply {
+        val dismissIntent = Intent(context, AlarmHelper::class.java).apply {
             action = ACTION_DISMISS
         }
         val dismissPendingIntent = PendingIntent.getBroadcast(
@@ -129,10 +129,10 @@ class AlarmReceiver : BroadcastReceiver() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
         Log.d("TAGonreseve", "notifiyed")
-        playSound(context, soundUri)
+        play(context, soundUri)
     }
 
-    private fun playSound(context: Context, soundUri: android.net.Uri) {
+    private fun play(context: Context, soundUri: android.net.Uri) {
         ringtone = RingtoneManager.getRingtone(context, soundUri)
         (context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager)?.let { audioManager ->
             if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
@@ -152,7 +152,7 @@ class AlarmReceiver : BroadcastReceiver() {
         notificationManager?.cancel(NOTIFICATION_ID)
     }
 
-    private fun createNotificationChannel(context: Context, channelId: String) {
+    private fun notificationChannel(context: Context, channelId: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Weather Alerts"
             val descriptionText = "Channel for weather alerts"
